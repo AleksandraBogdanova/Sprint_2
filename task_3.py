@@ -1,51 +1,36 @@
 class PointsForPlace:
-    def __init__(self):
-        self.points = 0  # Изначально количество очков равно нулю
-
-    def get_points_for_place(self, place):
+    @staticmethod
+    def get_points_for_place(place):
         if place > 100:
             print('Баллы начисляются только первым 100 участникам')
-            return None
+            return 0  
         if place < 1:
             print('Спортсмен не может занять нулевое или отрицательное место')
-            return None
+            return 0 
 
-        points = 101 - place
-        return points
+        return 101 - place
 
 class PointsForMeters:
-    def __init__(self):
-        self.points = 0  # Изначально количество очков равно нулю
-
-    def get_points_for_meters(self, meters):
+    @staticmethod
+    def get_points_for_meters(meters):
         if meters < 0:
             print('Количество метров не может быть отрицательным')
-            return None
-
-        points = meters * 0.5
-        return points
+            return 0  # Всегда возвращаем числовой тип
+        return meters * 0.5
 
 class TotalPoints(PointsForPlace, PointsForMeters):
     def __init__(self):
-        super().__init__()  # Инициализация родительского класса
+        super().__init__()
 
     def get_total_points(self, meters, place):
         points_for_place = self.get_points_for_place(place)
         points_for_meters = self.get_points_for_meters(meters)
-
-        # Если какой‑то из методов вернул None, возвращаем 0 как целое число
-        if points_for_place is None or points_for_meters is None:
-            return 0
-
         total = points_for_place + points_for_meters
         return int(total)  # Приводим результат к целому числу
 
 # Тестирование
-points_for_place = PointsForPlace()
-print(points_for_place.get_points_for_place(10))  # 91
-
-points_for_meters = PointsForMeters()
-print(points_for_meters.get_points_for_meters(10))  # 5.0
+print(PointsForPlace.get_points_for_place(10))  # 91
+print(PointsForMeters.get_points_for_meters(10))  # 5.0
 
 total_points = TotalPoints()
 print(total_points.get_points_for_place(10))  # 91
